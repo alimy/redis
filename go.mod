@@ -1,4 +1,4 @@
-module github.com/arvancloud/redis
+module github.com/alimy/redis
 
 go 1.11
 
