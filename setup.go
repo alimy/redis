@@ -3,7 +3,7 @@ package redis
 import (
 	"strconv"
 
-	"github.com/mholt/caddy"
+	"github.com/caddyserver/caddy"
 	"github.com/coredns/coredns/core/dnsserver"
 	"github.com/coredns/coredns/plugin"
 )
@@ -30,13 +30,13 @@ func setup(c *caddy.Controller) error {
 }
 
 func redisParse(c *caddy.Controller) (*Redis, error) {
-	redis := Redis {
-		keyPrefix:"",
-		keySuffix:"",
-		Ttl:300,
+	redis := Redis{
+		keyPrefix: "",
+		keySuffix: "",
+		Ttl:       300,
 	}
 	var (
-		err            error
+		err error
 	)
 
 	for c.Next() {

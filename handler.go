@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/coredns/coredns/plugin"
+	"github.com/coredns/coredns/request"
 	"github.com/miekg/dns"
 	"golang.org/x/net/context"
-	"github.com/coredns/coredns/request"
 )
 
 // ServeDNS implements the plugin.Handler interface.
