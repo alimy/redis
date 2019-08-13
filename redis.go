@@ -1,16 +1,16 @@
 package redis
 
 import (
-	"encoding/json"
 	"fmt"
 	"net"
 	"strings"
 	"time"
 
-	"github.com/miekg/dns"
 	"github.com/coredns/coredns/plugin"
+	"github.com/miekg/dns"
 
 	redisCon "github.com/garyburd/redigo/redis"
+	jsoniter "github.com/json-iterator/go"
 )
 
 type Redis struct {
@@ -33,49 +33,49 @@ type Zone struct {
 }
 
 type Record struct {
-	A     []A_Record     `json:"a,omitempty"`
-	AAAA  []AAAA_Record  `json:"aaaa,omitempty"`
-	TXT   []TXT_Record   `json:"txt,omitempty"`
-	CNAME []CNAME_Record `json:"cname,omitempty"`
-	NS    []NS_Record    `json:"ns,omitempty"`
-	MX    []MX_Record    `json:"mx,omitempty"`
-	SRV   []SRV_Record   `json:"srv,omitempty"`
-	CAA   []CAA_Record   `json:"caa,omitempty"`
-	SOA   SOA_Record     `json:"soa,omitempty"`
+	A     []ARecord     `json:"a,omitempty"`
+	AAAA  []AAAARecord  `json:"aaaa,omitempty"`
+	TXT   []TXTRecord   `json:"txt,omitempty"`
+	CNAME []CNAMERecord `json:"cname,omitempty"`
+	NS    []NSRecord    `json:"ns,omitempty"`
+	MX    []MXRecord    `json:"mx,omitempty"`
+	SRV   []SRVRecord   `json:"srv,omitempty"`
+	CAA   []CAARecord   `json:"caa,omitempty"`
+	SOA   SOARecord     `json:"soa,omitempty"`
 }
 
-type A_Record struct {
+type ARecord struct {
 	Ttl uint32 `json:"ttl,omitempty"`
 	Ip  net.IP `json:"ip"`
 }
 
-type AAAA_Record struct {
+type AAAARecord struct {
 	Ttl uint32 `json:"ttl,omitempty"`
 	Ip  net.IP `json:"ip"`
 }
 
-type TXT_Record struct {
+type TXTRecord struct {
 	Ttl  uint32 `json:"ttl,omitempty"`
 	Text string `json:"text"`
 }
 
-type CNAME_Record struct {
+type CNAMERecord struct {
 	Ttl  uint32 `json:"ttl,omitempty"`
 	Host string `json:"host"`
 }
 
-type NS_Record struct {
+type NSRecord struct {
 	Ttl  uint32 `json:"ttl,omitempty"`
 	Host string `json:"host"`
 }
 
-type MX_Record struct {
+type MXRecord struct {
 	Ttl        uint32 `json:"ttl,omitempty"`
 	Host       string `json:"host"`
 	Preference uint16 `json:"preference"`
 }
 
-type SRV_Record struct {
+type SRVRecord struct {
 	Ttl      uint32 `json:"ttl,omitempty"`
 	Priority uint16 `json:"priority"`
 	Weight   uint16 `json:"weight"`
@@ -83,7 +83,7 @@ type SRV_Record struct {
 	Target   string `json:"target"`
 }
 
-type SOA_Record struct {
+type SOARecord struct {
 	Ttl     uint32 `json:"ttl,omitempty"`
 	Ns      string `json:"ns"`
 	MBox    string `json:"MBox"`
@@ -93,7 +93,7 @@ type SOA_Record struct {
 	MinTtl  uint32 `json:"minttl"`
 }
 
-type CAA_Record struct {
+type CAARecord struct {
 	Flag  uint8  `json:"flag"`
 	Tag   string `json:"tag"`
 	Value string `json:"value"`
@@ -377,7 +377,7 @@ func (redis *Redis) get(key string, z *Zone) *Record {
 		return nil
 	}
 	r := new(Record)
-	err = json.Unmarshal([]byte(val), r)
+	err = jsoniter.Unmarshal([]byte(val), r)
 	if err != nil {
 		fmt.Println("parse error : ", val, err)
 		return nil

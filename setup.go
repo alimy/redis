@@ -77,7 +77,7 @@ func redisParse(c *caddy.Controller) (*Redis, error) {
 					}
 					redis.readTimeout, err = strconv.Atoi(c.Val())
 					if err != nil {
-						redis.readTimeout = 0;
+						redis.readTimeout = 0
 					}
 				case "ttl":
 					if !c.NextArg() {
